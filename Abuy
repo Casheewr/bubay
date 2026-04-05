@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Abuy 🎂</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#C33149;
+  --cream:#F3D9B1;
+  --green:#A8C256;
+}
+body{
+  margin:0; font-family:'Baloo 2',cursive; background:var(--cream); overflow:hidden;
+}
+.page{display:none;height:100vh;width:100vw;justify-content:center;align-items:center;flex-direction:column;text-align:center;transition:.6s ease}
+.active{display:flex}
+h1,p{color:var(--pink)}
+button{
+  background:var(--green); border:none; padding:12px 20px; margin:8px; border-radius:999px;
+  font-size:16px; cursor:pointer; box-shadow:0 4px 0 rgba(0,0,0,0.1);
+  transition:.2s;
+}
+button:hover{transform:translateY(-3px) scale(1.05)}
+
+/* calendar */
+.calendar{display:grid;grid-template-columns:repeat(7,40px);gap:6px}
+.day{padding:10px;background:white;border-radius:12px}
+.highlight{border:3px dashed var(--pink);border-radius:50%;animation:bounce 1s infinite}
+
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+/* DOOR */
+.doorWrap{position:relative}
+.door{
+  width:170px;height:260px;background:#8b2e3c;border-radius:12px;cursor:pointer;
+  position:relative;transform-origin:left;transition:transform 0.8s cubic-bezier(.68,-0.55,.27,1.55);
+  box-shadow:inset -10px 0 rgba(0,0,0,0.2);
+}
+.door::before{content:"";position:absolute;width:20px;height:20px;background:gold;border-radius:50%;right:10px;top:50%}
+.door.open{transform:rotateY(-120deg)}
+
+.mailman{display:none}
+
+/* hearts */
+.heart{
+  position:absolute;width:12px;height:12px;background:var(--pink);
+  transform:rotate(45deg);animation:float 4s linear infinite;
+}
+.heart::before,.heart::after{
+  content:"";position:absolute;width:12px;height:12px;background:var(--pink);border-radius:50%;
+}
+.heart::before{top:-6px;left:0}
+.heart::after{left:-6px;top:0}
+
+@keyframes float{0%{transform:translateY(0) rotate(45deg);opacity:1}100%{transform:translateY(-220px) rotate(45deg);opacity:0}}
+
+/* VN style text box */
+.dialogue{
+  position:absolute;bottom:0;width:100%;background:rgba(255,255,255,0.9);
+  padding:15px;border-top:3px solid var(--pink);
+}
+</style>
+</head>
+<body>
+
+<!-- AUDIO -->
+<audio id="bgm" loop autoplay>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_cute.mp3" type="audio/mpeg">
+</audio>
+<audio id="knock"><source src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_knock.mp3"></audio>
+<audio id="doorSound"><source src="https://cdn.pixabay.com/download/audio/2022/03/door.mp3"></audio>
+<audio id="fail"><source src="https://cdn.pixabay.com/download/audio/2022/03/fail.mp3"></audio>
+
+<!-- PAGE 1 -->
+<div class="page active" id="page1">
+  <h1>hmm... what day is it today? 🧸</h1>
+  <div class="calendar" id="calendar"></div>
+  <p>OH!! it's april 5th!! 💖✨</p>
+  <button onclick="nextPage(2)">continue ➡️</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="page2">
+  <div class="doorWrap">
+    <div class="door" onclick="openDoor()"></div>
+  </div>
+  <div class="mailman" id="mailman">
+    <p>📬 abuy!! you've got a letter!!</p>
+    <button onclick="nextPage(3)">accept 💌</button>
+    <button onclick="badEnding()">decline 😈</button>
+  </div>
+  <div class="dialogue">*knock knock...*</div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="page3">
+  <h1>💖 HAPPY BIRTHDAY ABUY 💖</h1>
+  <p>
+  hii abuyyy 🥺💖
+  <br><br>
+  HAPPY BIRTHDAYYY!!! 🎂✨
+  i'm so so glad you exist like actually??? the world is better with you in it fr 😤💞
+  <br><br>
+  i hope today is full of laughs, good food, and all the happiness you deserve (which is A LOT btw)
+  <br><br>
+  thanks for being you — funny, kind, chaotic (sometimes 😈), and just overall amazing
+  <br><br>
+  stay winning, stay shining, and never forget you're super loved 💖✨
+  <br><br>
+  ok that's it before i get TOO emotional 😭
+  <br><br>
+  happy birthday again!!! 🎉🎂💞
+  </p>
+</div>
+
+<script>
+function nextPage(p){
+  document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));
+  document.getElementById('page'+p).classList.add('active');
+}
+
+function openDoor(){
+  document.getElementById('knock').play();
+  const door=document.querySelector('.door');
+  door.classList.add('open');
+  document.getElementById('doorSound').play();
+  setTimeout(()=>{
+    document.getElementById('mailman').style.display='block';
+  },700);
+}
+
+function badEnding(){
+  document.getElementById('fail').play();
+  alert("YOU SLAPPED THE MAILMAN 😭😭\nhe drops the letter... looks at you...\nand slowly walks away crying...\n\nBAD ENDING 💀");
+}
+
+// calendar
+const cal=document.getElementById('calendar');
+for(let i=1;i<=30;i++){
+  const d=document.createElement('div');
+  d.classList.add('day');
+  d.innerText=i;
+  if(i===5)d.classList.add('highlight');
+  cal.appendChild(d);
+}
+
+// hearts
+setInterval(()=>{
+  const h=document.createElement('div');
+  h.classList.add('heart');
+  h.style.left=Math.random()*window.innerWidth+'px';
+  h.style.top=window.innerHeight+'px';
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+},300);
+</script>
+
+</body>
+</html>
